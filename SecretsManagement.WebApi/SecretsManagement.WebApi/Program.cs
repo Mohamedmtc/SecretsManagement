@@ -3,12 +3,13 @@ using SecretsManagement.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var movieApiKey = builder.Configuration["Movies:ServiceApiKey"];
 
-var movieApiKey = builder.Configuration["Logging:LogLevel:Default"];
 
+var moviesConfig = builder.Configuration.GetSection(MovieSettings.SectionName).Get<MovieSettings>();
+var _moviesApiKey = moviesConfig.ServiceApiKey;
 
-var moviesConfig = builder.Configuration.GetSection("Movies").Get<MovieSettings>();
-var objmoviesApiKey = moviesConfig.ServiceApiKey;
+builder.Services.Configure<MovieSettings>(builder.Configuration.GetSection(MovieSettings.SectionName));
 
 // Add services to the container.
 

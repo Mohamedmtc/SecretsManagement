@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace SecretsManagement.WebApi.Controllers
 {
@@ -12,10 +13,12 @@ namespace SecretsManagement.WebApi.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IOptions<MovieSettings> _options;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IOptions<MovieSettings> options)
         {
             _logger = logger;
+            _options = options;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
