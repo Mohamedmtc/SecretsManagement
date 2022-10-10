@@ -28,8 +28,12 @@ The following variables are locked in early when initializing the host builders 
     Content root
     Web root
 
+application configuration
+=========================
+
 Order of Precedence
-===================
+-------------------
+
 The last key loaded wins.
 
 
@@ -39,8 +43,12 @@ The last key loaded wins.
 - Cloud Secrete stores
 
 
+The local User Secrets File
+===========================
+
 where the secrete values saved
-==============================
+------------------------------
+
 The values are stored in a JSON file in the local machine's user profile folder
 
     %APPDATA%\Microsoft\UserSecrets\<user_secrets_id>\secrets.json
@@ -48,7 +56,8 @@ The values are stored in a JSON file in the local machine's user profile folder
 In the preceding file paths, replace <user_secrets_id> with the UserSecretsId value specified in the project file.
 
 Enable secret storage
-=====================
+---------------------
+
 The Secret Manager tool includes an init command. To use user secrets, run the following command in the project directory
 
     dotnet user-secrets init
@@ -61,7 +70,7 @@ The preceding command adds a UserSecretsId element within a PropertyGroup of the
     </PropertyGroup>
 
 Set a secret
-============
+------------
 
     dotnet user-secrets set "Movies:ServiceApiKey" "12345"
 
