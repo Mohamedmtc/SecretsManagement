@@ -1,15 +1,30 @@
+using Amazon;
+using Amazon.Runtime;
 using Microsoft.Extensions.Configuration;
 using SecretsManagement.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var movieApiKey = builder.Configuration["Movies:ServiceApiKey"];
 
 
-var moviesConfig = builder.Configuration.GetSection(MovieSettings.SectionName).Get<MovieSettings>();
-var _moviesApiKey = moviesConfig.ServiceApiKey;
+var awsAppSettings = builder.Configuration.GetSection(AwsAppSettings.SectionName).Get<AwsAppSettings>();
 
-builder.Services.Configure<MovieSettings>(builder.Configuration.GetSection(MovieSettings.SectionName));
+var env = builder.Environment.EnvironmentName;
+
+builder.Configuration.AddSecretsManager(
+        credentials: new BasicAWSCredentials(awsAppSettings.UserAccessKeyId, awsAppSettings.UserAccessSecretKey),
+        region: RegionEndpoint.GetBySystemName(awsAppSettings.Region),
+        configurator: options =>
+        {
+
+            options.SecretFilter = entry => entry.Name.ToLower().StartsWith($"{env}_Secrete.WebApi".ToLower());
+            options.KeyGenerator = (_, s) => s
+                .Remove(0, s.IndexOf(':') + 1)
+                .Replace("__", ":");
+            options.PollingInterval = TimeSpan.FromSeconds(10);
+        });
+
+var movieSettings = builder.Configuration.GetSection(MovieSettings.SectionName).Get<MovieSettings>();
 
 // Add services to the container.
 
