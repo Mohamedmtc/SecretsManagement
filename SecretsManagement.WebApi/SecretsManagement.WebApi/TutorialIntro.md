@@ -62,6 +62,7 @@ The Secret Manager tool includes an init command. To use user secrets, run the f
 
     dotnet user-secrets init
 
+
 The preceding command adds a UserSecretsId element within a PropertyGroup of the project file. By default, the inner text of UserSecretsId is a GUID. The inner text is arbitrary, but is unique to the project.
 
     <PropertyGroup>
